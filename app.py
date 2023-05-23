@@ -49,7 +49,7 @@ def mpg_mpl(year, car_class, show_means):
         group = group[group['class'] == car_class]
     group.plot('displ', 'hwy', marker='.', linestyle='', ms=12, alpha=0.5, ax=ax, legend=None)
     if show_means == "Yes":
-        means = df.groupby('class').mean()
+        means = df.groupby('class').mean(numeric_only = True)
         for cc in means.index:
             ax.plot(means.loc[cc, 'displ'], means.loc[cc, 'hwy'], marker='.', linestyle='', ms=12, alpha=1, label=cc)
         ax.legend(loc='upper right', bbox_to_anchor=(1.1, 1))
@@ -68,7 +68,7 @@ def mpg_plotly(year, car_class, show_means):
         group = group[group['class'] == car_class]
     fig = px.scatter(group, x='displ', y='hwy', opacity=0.5, range_x=[1, 8], range_y=[10, 50])
     if show_means == "Yes":
-        means = df.groupby('class').mean().reset_index()
+        means = df.groupby('class').mean(numeric_only = True).reset_index()
         fig = px.scatter(means, x='displ', y='hwy', opacity=0.5, color='class', range_x=[1, 8], range_y=[10, 50])
         fig.add_trace(go.Scatter(x=group['displ'], y=group['hwy'], mode='markers', name=f'{year}_{car_class}',
                                  opacity=0.5, marker=dict(color="RoyalBlue")))
